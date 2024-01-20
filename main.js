@@ -26,21 +26,21 @@ const ambientOcclusion = textureLoader.load("./textures/abstract/Abstract_004_OC
 let modelOffset = 4.9 * (-1);
 let models = [];
 const loader = new GLTFLoader().setPath('./models/');
-loader.load('subway-model-1-with-material.glb', (glb1) => {
+loader.load('subway-model-1-with-material-joined.glb', (glb1) => {
 	const model1 = glb1.scene;
 	
 
 	model1.position.setZ(0);
 
-	loader.load('subway-model-2-with-material.glb', (glb2) => {
+	loader.load('subway-model-2-with-material-joined.glb', (glb2) => {
 		const model2 = glb2.scene;
 
-		for (let x = 1; x <= 30; x++) {
-			let xModel = Math.floor(Math.random() * 2) < 1 ? model1.clone() : model2.clone();
-			xModel.position.set(0, 0, modelOffset * x);
-			scene.add(xModel);
+		for (let x = 1; x <= 20; x++) {
+			let newModel = Math.floor(Math.random() * 2) < 1 ? model1.clone() : model2.clone();
+			newModel.position.set(0, 0, modelOffset * x);
+			scene.add(newModel);
 	
-			models.push(xModel);
+			models.push(newModel);
 		}
 
 		generateBackBox();
@@ -165,8 +165,8 @@ function generateBackBox() {
 }
 
 // For FPS
-// let frames = 0;
-// let prevTime = performance.now();
+let frames = 0;
+let prevTime = performance.now();
 
 function animate() {
 	requestAnimationFrame( animate );
@@ -198,19 +198,22 @@ function animate() {
 
 
 	// FPS counter
-	// frames ++;
-    // const time = performance.now();
+	frames ++;
+    const time = performance.now();
     
-    // if ( time >= prevTime + 1000 ) {
+    if ( time >= prevTime + 1000 ) {
     
-    // 	console.log( Math.round( ( frames * 1000 ) / ( time - prevTime ) ) );
+    	console.log( Math.round( ( frames * 1000 ) / ( time - prevTime ) ) );
       
-    //   frames = 0;
-    //   prevTime = time;
+      frames = 0;
+      prevTime = time;
       
-    // }
+    }
 
 	renderer.render( scene, camera );
+
+	console.log(renderer.info.render.calls);
 }
+
 
 animate();
